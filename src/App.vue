@@ -10,22 +10,28 @@
             <md-input v-model="currentTodo" @keydown.enter="addTodo()" placeholder="Add a todo"></md-input>
           </md-field>
         </md-list-item>
-        <md-list-item v-for="todo in todos" @dblclick="editTodo(todo)" :key="todo.id" >
-          <i class="material-icons" @click="toggleTodo(todo)">
-            {{ todo.completed ? "check_box" : "check_box_outline_blank" }}
-          </i>
-            <span :class="{ isComplete: todo.completed}">{{ todo.label }}</span>
-          <i class="material-icons" @click="removeTodo(todo)">
-            close
-          </i>
-        </md-list-item>
+        <span v-for="todo in todos" :key="todo.id">
+          <todoItem
+            :todo="todo"
+            @toggle-completed="toggleTodo(todo)"
+            @remove="removeTodo(todo)"
+            @toggle-editing="toggleEditing(todo)"
+            @finish-editing="pushEditChanges"
+          ></todoItem>
+        </span>
       </md-list>
     </md-app-content>
   </md-app>
 </template>
 
 <script>
+import todoItem from "./components/todo-item";
+
 export default {
+  name: "app",
+  components: {
+    todoItem
+  },
   data() {
     return {
       todos: [],
@@ -34,12 +40,15 @@ export default {
   },
   methods: {
     addTodo() {
-      this.todos.push({
-        id: this.todos.length,
-        label: this.currentTodo,
-        completed: false
-      });
-      this.currentTodo = "";
+      if (this.currentTodo) {
+        this.todos.push({
+          id: this.todos.length,
+          label: this.currentTodo,
+          completed: false,
+          isEditing: false
+        });
+        this.currentTodo = "";
+      }
     },
 
     removeTodo(todo) {
@@ -47,8 +56,16 @@ export default {
       this.todos.splice(index, 1);
     },
 
-    editTodo(todo) {
-      console.log("editing todo");
+    toggleEditing(todo) {
+      const index = this.todos.indexOf(todo);
+      this.todos[index].isEditing = !this.todos[index].isEditing;
+    },
+
+    pushEditChanges(payload) {
+      const [todo, newLabel] = payload;
+      const index = this.todos.indexOf(todo);
+      this.todos[index].label = newLabel;
+      this.toggleEditing(todo);
     },
 
     toggleTodo(todo) {
