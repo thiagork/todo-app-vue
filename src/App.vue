@@ -38,6 +38,16 @@ export default {
       currentTodo: ""
     };
   },
+  created: function() {
+    if (localStorage.todos) {
+      this.todos = JSON.parse(localStorage.todos);
+    }
+  },
+  updated: function() {
+    if (this.todos) {
+      localStorage.todos = JSON.stringify(this.todos);
+    }
+  },
   methods: {
     addTodo() {
       if (this.currentTodo) {
@@ -71,6 +81,8 @@ export default {
     toggleTodo(todo) {
       const index = this.todos.indexOf(todo);
       this.todos[index].completed = !this.todos[index].completed;
+
+      localStorage.todos = JSON.stringify(this.todos);
     }
   }
 };
