@@ -10,15 +10,17 @@
             <md-input v-model="currentTodo" @keydown.enter="addTodo()" placeholder="Add a todo"></md-input>
           </md-field>
         </md-list-item>
-        <span v-for="todo in todos" :key="todo.id">
-          <todoItem
-            :todo="todo"
-            @toggle-completed="toggleTodo(todo)"
-            @remove="removeTodo(todo)"
-            @toggle-editing="toggleEditing(todo)"
-            @finish-editing="pushEditChanges"
-          ></todoItem>
-        </span>
+        <draggable v-model="todos"  @start="drag=true" @end="drag=false">
+          <div v-for="todo in todos" :key="todo.id">
+            <todoItem
+              :todo="todo"
+              @toggle-completed="toggleTodo(todo)"
+              @remove="removeTodo(todo)"
+              @toggle-editing="toggleEditing(todo)"
+              @finish-editing="pushEditChanges"
+            ></todoItem>
+          </div>
+        </draggable>
       </md-list>
     </md-app-content>
   </md-app>
@@ -26,11 +28,13 @@
 
 <script>
 import todoItem from "./components/todo-item";
+import draggable from "vuedraggable";
 
 export default {
   name: "app",
   components: {
-    todoItem
+    todoItem,
+    draggable
   },
   data() {
     return {

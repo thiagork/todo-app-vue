@@ -6,6 +6,7 @@
         @click="$emit('toggle-completed')"
       >{{ todo.completed ? "check_box" : "check_box_outline_blank" }}</i>
       <span
+        class="todo-item"
         :class="{ isComplete: todo.completed}"
         @dblclick="$emit('toggle-editing')"
       >{{ this.todo.label }}</span>
@@ -34,6 +35,10 @@ export default {
 </script>
 
 <style>
+.todo-item {
+  flex-grow: 2;
+  margin-left: 10px;
+}
 </style>
 
 
