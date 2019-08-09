@@ -15,6 +15,7 @@
     <md-list-item v-if="todo.isEditing">
       <md-field>
         <md-input v-model="newLabel" @keydown.enter="$emit('finish-editing', [todo, newLabel])"></md-input>
+        <i class="material-icons" @click="$emit('finish-editing', [todo, newLabel])">done</i>
       </md-field>
     </md-list-item>
   </span>
@@ -38,6 +39,10 @@ export default {
 .todo-item {
   flex-grow: 2;
   margin-left: 10px;
+}
+
+.isComplete {
+  text-decoration: line-through;
 }
 </style>
 

@@ -1,16 +1,17 @@
 <template>
   <md-app>
     <md-app-toolbar class="md-primary">
-      <span class="md-title">Todo App</span>
+      <h1 class="md-headline">Todo App</h1>
     </md-app-toolbar>
     <md-app-content>
       <md-list class="todos">
         <md-list-item>
           <md-field>
             <md-input v-model="currentTodo" @keydown.enter="addTodo()" placeholder="Add a todo"></md-input>
+            <i class="material-icons" @click="addTodo()">{{this.currentTodo ? "add" : ""}}</i>
           </md-field>
         </md-list-item>
-        <draggable v-model="todos"  @start="drag=true" @end="drag=false">
+        <draggable v-model="todos" @start="drag=true" @end="drag=false">
           <div v-for="todo in todos" :key="todo.id">
             <todoItem
               :todo="todo"
@@ -93,7 +94,6 @@ export default {
 </script>
 
 <style>
-.isComplete {
-  text-decoration: line-through;
-}
+
+
 </style>
